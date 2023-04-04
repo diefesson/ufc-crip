@@ -1,14 +1,17 @@
-﻿using Diefesson.Cryptool.Classic;
+﻿using Diefesson.Cryptool.Analisys;
 
-var key = 3;
-var plain = "My Super Secret Message";
+var text = "";
 
-var encrypter = new CaesarEncrypter(key);
+var languageIdentifier = new LanguageIdentifier(
+    DefaultTrigramsLists.ENUSTrigrams,
+    DefaultTrigramsLists.PTBRTrigrams
+);
 
-var encrypted = String.Concat(plain.Select(encrypter.Crypt));
+var scores = languageIdentifier.analyze(text);
+var language = languageIdentifier.language(text);
 
-var candidates = CaesarBruteForce.bruteForce(encrypted);
-for(var i = 0; i < encrypted.Length; i++)
+Console.WriteLine($"detected language: {language}");
+foreach (var (l, s) in scores)
 {
-    Console.WriteLine($"{i} : {candidates[i]}");
+    Console.WriteLine($"language: {l} score: {s} ");
 }
