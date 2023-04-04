@@ -17,8 +17,8 @@ public static class Program
             {
                 var text = Console.In.ReadToEnd();
                 var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
-                var language = languageIdenfier.InferLanguage(text);
-                Console.WriteLine($"Language: {language}");
+                var result = languageIdenfier.InferLanguage(text);
+                Console.WriteLine($"Language: {result.Language} Score ${result.Score}");
                 return 0;
             },
             (CaesarEncryptOptions o) =>
@@ -52,11 +52,11 @@ public static class Program
                 var encrypted = Console.In.ReadToEnd();
                 var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
                 var canditates = CaesarBruteForce.bruteForce(encrypted);
-                var guess = canditates
-                    .Select(candidate => languageIdenfier.Analyze(candidate).MaxBy(e => e.Value))
-                    .Select((e, i) => new { language = e.Key, score = e.Value, key = i })
-                    .MaxBy(g => g.score)!;
-                Console.WriteLine($"Language: {guess.language} Score: {guess.score} Key: {guess.key}");
+                var (result, key) = canditates
+                    .Select(c => languageIdenfier.InferLanguage(c))
+                    .Select((r, i) => (r, i))
+                    .MaxBy((e => e.r.Score)!);
+                Console.WriteLine($"Language: {result.Language} Score: {result.Score} Key: {key}");
                 return 0;
             },
             _ => 1

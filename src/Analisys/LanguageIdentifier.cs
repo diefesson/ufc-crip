@@ -1,5 +1,19 @@
 namespace Diefesson.Cryptool.Analisys;
 
+public record AnalisysEntry
+{
+    public string Language
+    { get; internal set; }
+    public int Score
+    { get; internal set; }
+
+    internal AnalisysEntry(string language, int score)
+    {
+        Language = language;
+        Score = score;
+    }
+}
+
 public class LanguageIdentifier
 {
     private readonly TrigramList[] trigamLists;
@@ -9,9 +23,9 @@ public class LanguageIdentifier
         this.trigamLists = trigamLists;
     }
 
-    public Dictionary<string, int> Analyze(string text)
+    public AnalisysEntry[] Analyze(string text)
     {
-        var scores = trigamLists.ToDictionary(tl => tl.language, _ => 0);
+        var analisys = trigamLists.ToDictionary(tl => tl.language, _ => 0);
         for (var t = 0; t < text.Length - 2; t++)
         {
             var trigram = String.Concat(text.Skip(t).Take(3));
@@ -19,17 +33,17 @@ public class LanguageIdentifier
             {
                 if (tl.Contains(trigram))
                 {
-                    scores[tl.language]++;
+                    analisys[tl.language]++;
                 }
             }
         }
-        return scores;
+        return analisys.Select(e => new AnalisysEntry(e.Key, e.Value)).ToArray();
     }
 
-    public string InferLanguage(string text)
+    public AnalisysEntry InferLanguage(string text)
     {
-        var scores = Analyze(text);
-        return scores.MaxBy(kp => kp.Value).Key;
+        var analisys = Analyze(text);
+        return analisys.MaxBy(e => e.Score)!;
     }
 
 }
