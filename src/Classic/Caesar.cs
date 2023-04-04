@@ -11,7 +11,7 @@ public class CaesarEncrypter
         this.key = key;
     }
 
-    public char Crypt(char p)
+    public char Encrypt(char p)
     {
         if (!Char.IsAsciiLetter(p))
             return p;
