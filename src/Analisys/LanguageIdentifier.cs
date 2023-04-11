@@ -3,9 +3,9 @@ namespace Diefesson.Cryptool.Analisys;
 public record AnalisysEntry
 {
     public string Language
-    { get; internal set; }
+    { get; private set; }
     public int Score
-    { get; internal set; }
+    { get; private set; }
 
     internal AnalisysEntry(string language, int score)
     {

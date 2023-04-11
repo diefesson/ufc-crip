@@ -13,53 +13,78 @@ public static class Program
             .Default
             .ParseArguments<IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions>(args)
             .MapResult(
-            (IdentifyLanguageOptions o) =>
+            (IdentifyLanguageOptions options) =>
             {
-                var text = Console.In.ReadToEnd();
-                var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
-                var result = languageIdenfier.InferLanguage(text);
-                Console.WriteLine($"Language: {result.Language} Score ${result.Score}");
+                IdentifyLanguage(options);
                 return 0;
             },
-            (CaesarEncryptOptions o) =>
+            (CaesarEncryptOptions options) =>
             {
-                var plain = Console.In.ReadToEnd();
-                var encrypter = new CaesarEncrypter(o.key);
-                var encrypted = String.Concat(plain.Select(encrypter.Encrypt));
-                Console.Write(encrypted);
+                CaesarEncrypt(options);
                 return 0;
             },
-            (CaesarDecryptOptions o) =>
+            (CaesarDecryptOptions options) =>
             {
-                var encrypted = Console.In.ReadToEnd();
-                var decrypter = new CaesarDecrypter(o.key);
-                var plain = String.Concat(encrypted.Select(decrypter.Decrypt));
-                Console.Write(plain);
+                CaesarDecrypt(options);
                 return 0;
             },
-            (CaesarBruteForceOptions o) =>
+            (CaesarBruteForceOptions _) =>
             {
-                var encrypted = Console.In.ReadToEnd();
-                var canditates = CaesarBruteForce.bruteForce(encrypted);
-                for (var i = 0; i < canditates.Length; i++)
-                {
-                    Console.WriteLine($"Key: {i} Candidate: {canditates[i]}");
-                }
+                CaesarBruteForce();
                 return 0;
             },
             (CaesarAutoOptions o) =>
             {
-                var encrypted = Console.In.ReadToEnd();
-                var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
-                var canditates = CaesarBruteForce.bruteForce(encrypted);
-                var (result, key) = canditates
-                    .Select(c => languageIdenfier.InferLanguage(c))
-                    .Select((r, i) => (r, i))
-                    .MaxBy((e => e.r.Score)!);
-                Console.WriteLine($"Language: {result.Language} Score: {result.Score} Key: {key}");
+                CaesarAuto();
                 return 0;
             },
             _ => 1
         );
+    }
+
+
+    private static void IdentifyLanguage(IdentifyLanguageOptions options)
+    {
+        var text = Console.In.ReadToEnd();
+        var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
+        var result = languageIdenfier.InferLanguage(text);
+        Console.WriteLine($"Language: {result.Language} Score ${result.Score}");
+    }
+
+    private static void CaesarEncrypt(CaesarEncryptOptions options)
+    {
+        var plaintext = Console.In.ReadToEnd();
+        var ciphertext = Caesar.Encrypt(plaintext, options.key);
+        Console.Write(ciphertext);
+    }
+
+    private static void CaesarDecrypt(CaesarDecryptOptions options)
+    {
+        var ciphertext = Console.In.ReadToEnd();
+        var plaintext = Caesar.Decrypt(ciphertext, options.key);
+        Console.Write(plaintext);
+    }
+
+    private static void CaesarBruteForce()
+    {
+        var ciphertext = Console.In.ReadToEnd();
+        var candidates = Classic.CaesarBruteForce.bruteForce(ciphertext);
+        for (var i = 0; i < candidates.Length; i++)
+        {
+            Console.WriteLine($"Key: {i}");
+            Console.WriteLine(candidates[i]);
+        }
+    }
+
+    private static void CaesarAuto()
+    {
+        var ciphertext = Console.In.ReadToEnd();
+        var languageIdentifier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
+        var candidates = Classic.CaesarBruteForce.bruteForce(ciphertext);
+        var (result, key) = candidates
+            .Select(c => languageIdentifier.InferLanguage(c))
+            .Select((AnalisysEntry r, int i) => (r, i))
+            .MaxBy(e => e.r.Score!);
+        Console.WriteLine($"Language: {result.Language} Score: {result.Score} Key: {key}");
     }
 }

@@ -2,7 +2,7 @@
 
 using CommandLine;
 
-[Verb("identify-language", HelpText ="Identifies input text language")]
+[Verb("identify-language", HelpText = "Identifies input text language")]
 public class IdentifyLanguageOptions
 { }
 
