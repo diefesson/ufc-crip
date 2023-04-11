@@ -11,7 +11,7 @@ public static class Program
     {
         Parser
             .Default
-            .ParseArguments<IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions>(args)
+            .ParseArguments<IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
             .MapResult(
             (IdentifyLanguageOptions options) =>
             {
@@ -36,6 +36,16 @@ public static class Program
             (CaesarAutoOptions o) =>
             {
                 CaesarAuto();
+                return 0;
+            },
+            (AutoKeyEncryptOptions options) =>
+            {
+                AutoKeyEncrypt(options);
+                return 0;
+            },
+            (AutoKeyDecryptOptions options) =>
+            {
+                AutoKeyDecrypt(options);
                 return 0;
             },
             _ => 1
@@ -86,5 +96,19 @@ public static class Program
             .Select((AnalisysEntry r, int i) => (r, i))
             .MaxBy(e => e.r.Score!);
         Console.WriteLine($"Language: {result.Language} Score: {result.Score} Key: {key}");
+    }
+
+    private static void AutoKeyEncrypt(AutoKeyEncryptOptions options)
+    {
+        var plaintext = Console.In.ReadToEnd();
+        var ciphertext = AutoKey.Encrypt(plaintext, options.key!);
+        Console.Write(ciphertext);
+    }
+
+    private static void AutoKeyDecrypt(AutoKeyDecryptOptions options)
+    {
+        var ciphertext = Console.In.ReadToEnd();
+        var plaintext = AutoKey.Decrypt(ciphertext, options.key!);
+        Console.Write(plaintext);
     }
 }

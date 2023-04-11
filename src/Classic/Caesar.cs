@@ -1,7 +1,5 @@
 namespace Diefesson.Cryptool.Classic;
 
-using Diefesson.Cryptool;
-
 public static class Caesar
 {
     public static string Encrypt(string plaintext, int key)

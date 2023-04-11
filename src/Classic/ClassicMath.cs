@@ -1,4 +1,4 @@
-namespace Diefesson.Cryptool;
+namespace Diefesson.Cryptool.Classic;
 
 public static class ClassicMath
 {
