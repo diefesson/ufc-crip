@@ -11,7 +11,7 @@ public static class Program
     {
         Parser
             .Default
-            .ParseArguments<IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
+            .ParseArguments<IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
             .MapResult(
             (IdentifyLanguageOptions options) =>
             {
@@ -33,9 +33,19 @@ public static class Program
                 CaesarBruteForce();
                 return 0;
             },
-            (CaesarAutoOptions o) =>
+            (CaesarAutoOptions _) =>
             {
                 CaesarAuto();
+                return 0;
+            },
+            (VigenereEncryptOptions options) =>
+            {
+                VigenereEncrypt(options);
+                return 0;
+            },
+            (VigenereDecryptOptions options) =>
+            {
+                VigenereDecrypt(options);
                 return 0;
             },
             (AutoKeyEncryptOptions options) =>
@@ -51,7 +61,6 @@ public static class Program
             _ => 1
         );
     }
-
 
     private static void IdentifyLanguage(IdentifyLanguageOptions options)
     {
@@ -96,6 +105,20 @@ public static class Program
             .Select((AnalisysEntry r, int i) => (r, i))
             .MaxBy(e => e.r.Score!);
         Console.WriteLine($"Language: {result.Language} Score: {result.Score} Key: {key}");
+    }
+
+    private static void VigenereEncrypt(VigenereEncryptOptions options)
+    {
+        var plaintext = Console.In.ReadToEnd();
+        var ciphertext = Vigenere.Encrypt(plaintext, options.key!);
+        Console.Write(ciphertext);
+    }
+
+    private static void VigenereDecrypt(VigenereDecryptOptions options)
+    {
+        var ciphertext = Console.In.ReadToEnd();
+        var plaintext = Vigenere.Decrypt(ciphertext, options.key!);
+        Console.Write(plaintext);
     }
 
     private static void AutoKeyEncrypt(AutoKeyEncryptOptions options)
