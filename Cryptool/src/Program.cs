@@ -11,8 +11,13 @@ public static class Program
     {
         Parser
             .Default
-            .ParseArguments<IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
+            .ParseArguments<CleanOptions, IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
             .MapResult(
+            (CleanOptions _) =>
+            {
+                Clean();
+                return 0;
+            },
             (IdentifyLanguageOptions options) =>
             {
                 IdentifyLanguage(options);
@@ -60,6 +65,13 @@ public static class Program
             },
             _ => 1
         );
+    }
+
+    private static void Clean()
+    {
+        var text = Console.In.ReadToEnd();
+        var clean = String.Concat(text.Where(Char.IsAsciiLetter).Select(Char.ToUpper));
+        Console.Write(clean);
     }
 
     private static void IdentifyLanguage(IdentifyLanguageOptions options)

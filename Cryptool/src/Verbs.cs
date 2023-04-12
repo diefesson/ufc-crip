@@ -2,6 +2,10 @@
 
 using CommandLine;
 
+[Verb("clean", HelpText = "Removes non ascii letters and transforms to uppercase")]
+public class CleanOptions
+{ }
+
 [Verb("identify-language", HelpText = "Identifies input text language")]
 public class IdentifyLanguageOptions
 { }
