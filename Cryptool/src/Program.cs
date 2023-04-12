@@ -67,7 +67,7 @@ public static class Program
         var text = Console.In.ReadToEnd();
         var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
         var result = languageIdenfier.InferLanguage(text);
-        Console.WriteLine($"Language: {result.Language} Score ${result.Score}");
+        Console.WriteLine($"Language: {result.Language} Score {result.Score}");
     }
 
     private static void CaesarEncrypt(CaesarEncryptOptions options)
