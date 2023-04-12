@@ -8,18 +8,22 @@ public static class AutoKey
     public static string Encrypt(string plaintext, string key)
     {
         var ciphertext = new StringBuilder(plaintext.Length);
-        for (var i = 0; i < plaintext.Length; i++)
+        var keystream = new StringBuilder(key, plaintext.Length);
+        var ki = 0;
+        foreach (var p in plaintext)
         {
-            var c = plaintext[i];
-            if (Char.IsAsciiLetter(c))
+            if (Char.IsAsciiLetter(p))
             {
-                var k = i < key.Length ? key[i] : plaintext[i - key.Length];
+                var k = keystream[ki];
                 var shift = ClassicMath.C2I(k);
-                ciphertext.Append(ClassicMath.Rot(c, shift));
+                char c = ClassicMath.Rot(p, shift);
+                ciphertext.Append(c);
+                keystream.Append(p);
+                ki++;
             }
             else
             {
-                ciphertext.Append(c);
+                ciphertext.Append(p);
             }
         }
         return ciphertext.ToString();
@@ -28,14 +32,18 @@ public static class AutoKey
     public static string Decrypt(string ciphertext, string key)
     {
         var plaintext = new StringBuilder(ciphertext.Length);
-        for (var i = 0; i < ciphertext.Length; i++)
+        var keystream = new StringBuilder(key, ciphertext.Length);
+        var ki = 0;
+        foreach(var c in ciphertext)
         {
-            var c = ciphertext[i];
             if (Char.IsAsciiLetter(c))
             {
-                var k = i < key.Length ? key[i] : plaintext[i - key.Length];
+                var k = keystream[ki];
                 var shift = ClassicMath.C2I(k);
-                plaintext.Append(ClassicMath.Rot(c, -shift));
+                char p = ClassicMath.Rot(c, -shift);
+                plaintext.Append(p);
+                keystream.Append(p);
+                ki++;
             }
             else
             {
