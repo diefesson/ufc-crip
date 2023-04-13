@@ -25,7 +25,7 @@ public class LanguageIdentifier
 
     public AnalisysEntry[] Analyze(string text)
     {
-        text = text.ToLower();
+        text = text.ToUpper();
         var analisys = trigamLists.ToDictionary(tl => tl.language, _ => 0);
         for (var t = 0; t < text.Length - 2; t++)
         {
