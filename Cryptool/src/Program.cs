@@ -7,15 +7,29 @@ using CommandLine;
 
 public static class Program
 {
+
+    private const bool Test = false;
+
+    public static void QuickTest()
+    { }
+
     public static void Main(string[] args)
     {
+        if (Test)
+        {
+#pragma warning disable CS0162
+            QuickTest();
+            return;
+        }
+
+#pragma warning disable CS0162
         Parser
             .Default
-            .ParseArguments<CleanOptions, IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
+            .ParseArguments<SanitizeOptions, IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
             .MapResult(
-            (CleanOptions _) =>
+            (SanitizeOptions _) =>
             {
-                Clean();
+                Sanitize();
                 return 0;
             },
             (IdentifyLanguageOptions options) =>
@@ -67,10 +81,10 @@ public static class Program
         );
     }
 
-    private static void Clean()
+    private static void Sanitize()
     {
         var text = Console.In.ReadToEnd();
-        var clean = String.Concat(text.Where(Char.IsAsciiLetter).Select(Char.ToUpper));
+        var clean = Sanitizer.Sanitize(text);
         Console.Write(clean);
     }
 

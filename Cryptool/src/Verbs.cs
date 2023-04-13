@@ -2,8 +2,8 @@
 
 using CommandLine;
 
-[Verb("clean", HelpText = "Removes non ascii letters and transforms to uppercase")]
-public class CleanOptions
+[Verb("sanitize", HelpText = "Sanitizes input to contain only uppercase letters")]
+public class SanitizeOptions
 { }
 
 [Verb("identify-language", HelpText = "Identifies input text language")]
