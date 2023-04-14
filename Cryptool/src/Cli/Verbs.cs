@@ -1,4 +1,4 @@
-﻿namespace Diefesson.Cryptool.Command;
+﻿namespace Diefesson.Cryptool.Cli;
 
 using CommandLine;
 

@@ -1,7 +1,6 @@
-namespace Diefesson.Cryptool;
+namespace Diefesson.Cryptool.Cli;
 
 using Diefesson.Cryptool.Analysis;
-using Diefesson.Cryptool.Command;
 using Diefesson.Cryptool.Classic;
 using CommandLine;
 
