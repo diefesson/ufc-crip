@@ -1,6 +1,6 @@
 namespace Diefesson.Cryptool;
 
-using Diefesson.Cryptool.Analisys;
+using Diefesson.Cryptool.Analysis;
 using Diefesson.Cryptool.Command;
 using Diefesson.Cryptool.Classic;
 using CommandLine;
@@ -27,9 +27,9 @@ public static class Program
             .Default
             .ParseArguments<SanitizeOptions, IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
             .MapResult(
-            (SanitizeOptions _) =>
+            (SanitizeOptions options) =>
             {
-                Sanitize();
+                Sanitize(options);
                 return 0;
             },
             (IdentifyLanguageOptions options) =>
@@ -81,10 +81,17 @@ public static class Program
         );
     }
 
-    private static void Sanitize()
+    private static void Sanitize(SanitizeOptions options)
     {
         var text = Console.In.ReadToEnd();
-        var clean = Sanitizer.Sanitize(text);
+        var clean = Sanitizer.Sanitize(text, new SanitizerOptions
+        {
+            // TODO: find out why null forgiving is not sufficient for bool
+            convert = options.convert!.Value,
+            spaces = options.spaces!.Value,
+            lines = options.lines!.Value,
+            upper = options.upper!.Value,
+        });
         Console.Write(clean);
     }
 

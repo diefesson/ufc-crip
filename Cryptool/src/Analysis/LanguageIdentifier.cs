@@ -1,4 +1,4 @@
-namespace Diefesson.Cryptool.Analisys;
+namespace Diefesson.Cryptool.Analysis;
 
 public record AnalisysEntry
 {

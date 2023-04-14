@@ -1,4 +1,4 @@
-namespace Diefesson.Cryptool.Analisys;
+namespace Diefesson.Cryptool.Analysis;
 
 using System.Collections;
 
