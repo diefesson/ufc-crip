@@ -1,8 +1,12 @@
 namespace Diefesson.Cryptool.Cli;
 
+using  System.Text;
+
+using CommandLine;
+
 using Diefesson.Cryptool.Analysis;
 using Diefesson.Cryptool.Classic;
-using CommandLine;
+
 
 public static class Program
 {
@@ -21,6 +25,8 @@ public static class Program
             return;
         }
 
+        Console.InputEncoding = Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
 #pragma warning disable CS0162
         Parser
             .Default
