@@ -14,6 +14,9 @@ public class SanitizeOptions
     [Option('l', "lines", Required = false, Default = true, HelpText = "Keep lines?")]
     public bool? lines { get; set; }
 
+    [Option('p', "punctuation", Required = false, Default = true, HelpText = "Keep punctuation?")]
+    public bool? punctuation { get; set; }
+
     [Option('u', "upper", Required = false, Default = true, HelpText = "Convert to uppercase?")]
     public bool? upper { get; set; }
 }

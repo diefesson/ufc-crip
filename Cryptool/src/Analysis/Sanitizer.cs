@@ -10,6 +10,8 @@ public record SanitizerOptions
 
     public bool lines { get; set; } = true;
 
+    public bool punctuation { get; set; } = true;
+
     public bool upper { get; set; } = true;
 }
 
@@ -18,7 +20,12 @@ public static class Sanitizer
 {
     private static Func<char, bool> createFilter(SanitizerOptions options)
     {
-        return (c) => Char.IsAsciiLetter(c) | (c == ' ' & options.spaces) | (c == '\n' & options.lines);
+        return (c) => (
+            Char.IsAsciiLetter(c) ||
+            c == ' ' && options.spaces ||
+            c == '\n' && options.lines ||
+            Char.IsPunctuation(c) && options.punctuation
+        );
     }
 
     public static string Sanitize(string text, SanitizerOptions options)

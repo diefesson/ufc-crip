@@ -22,7 +22,7 @@ public static class ClassicMath
 
     public static char Rot(char c, int shift, bool keepCase = true)
     {
-        var lower = keepCase & Char.IsLower(c);
+        var lower = keepCase && Char.IsLower(c);
         var r = I2C(Mod(C2I(c) + shift, AlphabetLen));
         return (lower) ? Char.ToLower(r) : r;
     }

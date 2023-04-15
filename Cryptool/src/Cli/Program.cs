@@ -89,6 +89,7 @@ public static class Program
             convert = options.convert!.Value,
             spaces = options.spaces!.Value,
             lines = options.lines!.Value,
+            punctuation = options.punctuation!.Value,
             upper = options.upper!.Value,
         });
         Console.Write(clean);
