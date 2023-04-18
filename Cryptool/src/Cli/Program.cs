@@ -1,6 +1,6 @@
 namespace Diefesson.Cryptool.Cli;
 
-using  System.Text;
+using System.Text;
 
 using CommandLine;
 
@@ -30,16 +30,21 @@ public static class Program
 #pragma warning disable CS0162
         Parser
             .Default
-            .ParseArguments<SanitizeOptions, IdentifyLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
+            .ParseArguments<SanitizeOptions, AnalysisFreqOptions, AnalysisLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
             .MapResult(
             (SanitizeOptions options) =>
             {
                 Sanitize(options);
                 return 0;
             },
-            (IdentifyLanguageOptions options) =>
+            (AnalysisFreqOptions options) =>
             {
-                IdentifyLanguage(options);
+                AnalysisFreq(options);
+                return 0;
+            },
+            (AnalysisLanguageOptions options) =>
+            {
+                AnalysisLanguage(options);
                 return 0;
             },
             (CaesarEncryptOptions options) =>
@@ -101,7 +106,33 @@ public static class Program
         Console.Write(clean);
     }
 
-    private static void IdentifyLanguage(IdentifyLanguageOptions options)
+    private static void AnalysisFreq(AnalysisFreqOptions options)
+    {
+        if (options.size <= 0)
+        {
+            Console.WriteLine("size must be positive");
+            return;
+        }
+        if (options.count <= 0)
+        {
+            Console.WriteLine("count must be positive");
+        }
+        var text = Console.In.ReadToEnd();
+        var frequencies = new FreqDist<String>();
+        foreach (var ngram in text.NGrams(options.size))
+        {
+            frequencies.Count(ngram, 1);
+        }
+        foreach (var entry in frequencies.Tops().Take(options.count))
+        {
+            var key = entry.Key
+                .Replace("\r", "\\r")
+                .Replace("\n", "\\n");
+            Console.WriteLine($"{key} : {entry.Count} ({entry.Freq:00.0}%)");
+        }
+    }
+
+    private static void AnalysisLanguage(AnalysisLanguageOptions options)
     {
         var text = Console.In.ReadToEnd();
         var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);

@@ -5,24 +5,34 @@ using CommandLine;
 [Verb("sanitize", HelpText = "Sanitizes input to contain only uppercase letters")]
 public class SanitizeOptions
 {
-    [Option('c', "convert", Required = false, Default = true, HelpText = "Convert diacritics?")]
+    [Option('c', "convert", Default = true, HelpText = "Convert diacritics?")]
     public bool? convert { get; set; } // '?' is necessary so the parser uses argument value
 
-    [Option('s', "spaces", Required = false, Default = true, HelpText = "Keep whitespaces?")]
+    [Option('s', "spaces", Default = true, HelpText = "Keep whitespaces?")]
     public bool? spaces { get; set; }
 
-    [Option('l', "lines", Required = false, Default = true, HelpText = "Keep lines?")]
+    [Option('l', "lines", Default = true, HelpText = "Keep lines?")]
     public bool? lines { get; set; }
 
-    [Option('p', "punctuation", Required = false, Default = true, HelpText = "Keep punctuation?")]
+    [Option('p', "punctuation", Default = true, HelpText = "Keep punctuation?")]
     public bool? punctuation { get; set; }
 
-    [Option('u', "upper", Required = false, Default = true, HelpText = "Convert to uppercase?")]
+    [Option('u', "upper", Default = true, HelpText = "Convert to uppercase?")]
     public bool? upper { get; set; }
 }
 
-[Verb("identify-language", HelpText = "Identifies input text language")]
-public class IdentifyLanguageOptions
+[Verb("analysis-freq", HelpText = "Performs n-gram frequency analysis")]
+public class AnalysisFreqOptions
+{
+    [Option('s', "size", Default = 1, HelpText = "N-gram size")]
+    public int size { get; set; }
+
+    [Option('c', "count", Default = 10, HelpText = "The number of entries to show")]
+    public int count { get; set; }
+}
+
+[Verb("analysis-language", HelpText = "Identifies input text language")]
+public class AnalysisLanguageOptions
 { }
 
 [Verb("caesar-encrypt", HelpText = "Encrypts input using Caesar Cipher")]
