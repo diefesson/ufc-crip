@@ -4,24 +4,24 @@ using Diefesson.Cryptool.Classic;
 
 public class VigenereTest
 {
-    private static string plaintext = "Hello World!";
+    private static string Plaintext = "Hello World!";
 
-    private static string ciphertext = "Hfnlp Yosnd!";
+    private static string Ciphertext = "Hfnlp Yosnd!";
 
-    private static string key = "abc";
+    private static string Key = "abc";
 
 
     [Fact]
     public void EncryptTest()
     {
-        var result = Vigenere.Encrypt(plaintext, key);
-        Assert.Equal(ciphertext, result);
+        var result = Vigenere.Encrypt(Plaintext, Key);
+        Assert.Equal(Ciphertext, result);
     }
 
     [Fact]
     public void DecryptTest()
     {
-        var result = Vigenere.Decrypt(ciphertext, key);
-        Assert.Equal(plaintext, result);
+        var result = Vigenere.Decrypt(Ciphertext, Key);
+        Assert.Equal(Plaintext, result);
     }
 }

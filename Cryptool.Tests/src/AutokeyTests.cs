@@ -4,24 +4,24 @@ using Diefesson.Cryptool.Classic;
 
 public class AutokeyTest
 {
-    private static string plaintext = "Hello World!";
+    private static string Plaintext = "Hello World!";
 
-    private static string ciphertext = "Hfnss Hzfhr!";
+    private static string Ciphertext = "Hfnss Hzfhr!";
 
-    private static string key = "abc";
+    private static string Key = "abc";
 
 
     [Fact]
     public void EncryptTest()
     {
-        var result = AutoKey.Encrypt(plaintext, key);
-        Assert.Equal(ciphertext, result);
+        var result = AutoKey.Encrypt(Plaintext, Key);
+        Assert.Equal(Ciphertext, result);
     }
 
     [Fact]
     public void DecryptTest()
     {
-        var result = AutoKey.Decrypt(ciphertext, key);
-        Assert.Equal(plaintext, result);
+        var result = AutoKey.Decrypt(Ciphertext, Key);
+        Assert.Equal(Plaintext, result);
     }
 }

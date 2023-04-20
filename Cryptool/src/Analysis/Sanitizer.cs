@@ -4,15 +4,15 @@ using System.Text;
 
 public record SanitizerOptions
 {
-    public bool convert { get; set; } = true;
+    public bool Convert { get; set; } = true;
 
-    public bool spaces { get; set; } = true;
+    public bool Spaces { get; set; } = true;
 
-    public bool lines { get; set; } = true;
+    public bool Lines { get; set; } = true;
 
-    public bool punctuation { get; set; } = true;
+    public bool Punctuation { get; set; } = true;
 
-    public bool upper { get; set; } = true;
+    public bool Upper { get; set; } = true;
 }
 
 
@@ -22,21 +22,21 @@ public static class Sanitizer
     {
         return (c) => (
             Char.IsAsciiLetter(c) ||
-            c == ' ' && options.spaces ||
-            c == '\n' && options.lines ||
-            Char.IsPunctuation(c) && options.punctuation
+            c == ' ' && options.Spaces ||
+            c == '\n' && options.Lines ||
+            Char.IsPunctuation(c) && options.Punctuation
         );
     }
 
     public static string Sanitize(string text, SanitizerOptions options)
     {
         var filter = createFilter(options);
-        if (options.convert)
+        if (options.Convert)
         {
             text = text.Normalize(NormalizationForm.FormD);
         }
         var cleaned = text.Where(filter);
-        if (options.upper)
+        if (options.Upper)
         {
             cleaned = cleaned.Select(Char.ToUpper);
         }
