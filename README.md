@@ -7,9 +7,11 @@ Project for Criptography discipline
 ## Features
 
 - Analysis
+  - N-gram Frequency
   - Text normalization
   - 3-gram language identification
 - Ciphers
   - Caesar (encryption, decryption, brute-force, key-discovery)
   - Vigenere (encryption, decryption)
   - Autokey (encryption, decryption)
+  - Monoalphabetic substitution (encryption, decryption)
