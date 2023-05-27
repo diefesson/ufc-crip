@@ -28,6 +28,11 @@ public static class Program
         Console.InputEncoding = Encoding.UTF8;
         Console.OutputEncoding = Encoding.UTF8;
 #pragma warning disable CS0162
+        ParseAndExecute(args);
+    }
+
+    private static void ParseAndExecute(string[] args)
+    {
         Parser
             .Default
             .ParseArguments<SanitizeOptions, AnalysisFreqOptions, AnalysisLanguageOptions, CaesarEncryptOptions, CaesarDecryptOptions, CaesarBruteForceOptions, CaesarAutoOptions, SubstitutionEncryptOptions, SubstitutionDecryptOptions, VigenereEncryptOptions, VigenereDecryptOptions, AutoKeyEncryptOptions, AutoKeyDecryptOptions>(args)
@@ -57,14 +62,14 @@ public static class Program
                 CaesarDecrypt(options);
                 return 0;
             },
-            (CaesarBruteForceOptions _) =>
+            (CaesarBruteForceOptions options) =>
             {
-                CaesarBruteForce();
+                CaesarBruteForce(options);
                 return 0;
             },
-            (CaesarAutoOptions _) =>
+            (CaesarAutoOptions options) =>
             {
-                CaesarAuto();
+                CaesarAuto(options);
                 return 0;
             },
             (SubstitutionEncryptOptions options) =>
@@ -103,15 +108,14 @@ public static class Program
 
     private static void Sanitize(SanitizeOptions options)
     {
-        var text = Console.In.ReadToEnd();
+        var text = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var clean = Sanitizer.Sanitize(text, new SanitizerOptions
         {
-            // TODO: find out why null forgiving is not sufficient for bool
-            Convert = options.Convert!.Value,
-            Spaces = options.Spaces!.Value,
-            Lines = options.Lines!.Value,
-            Punctuation = options.Punctuation!.Value,
-            Upper = options.Upper!.Value,
+            Convert = options.Convert,
+            Spaces = options.Spaces,
+            Lines = options.Lines,
+            Punctuation = options.Punctuation,
+            Upper = options.Upper,
         });
         Console.Write(clean);
     }
@@ -127,7 +131,7 @@ public static class Program
         {
             Console.WriteLine("count must be positive");
         }
-        var text = Console.In.ReadToEnd();
+        var text = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var frequencies = new FreqDist<String>();
         foreach (var ngram in text.NGrams(options.Size))
         {
@@ -144,29 +148,29 @@ public static class Program
 
     private static void AnalysisLanguage(AnalysisLanguageOptions options)
     {
-        var text = Console.In.ReadToEnd();
-        var languageIdenfier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
-        var result = languageIdenfier.InferLanguage(text);
+        var text = CliConventions.GetStreamReader(options.input).ReadToEnd();
+        var languageIdentifier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
+        var result = languageIdentifier.InferLanguage(text);
         Console.WriteLine($"Language: {result.Language} Score {result.Score}");
     }
 
     private static void CaesarEncrypt(CaesarEncryptOptions options)
     {
-        var plaintext = Console.In.ReadToEnd();
+        var plaintext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var ciphertext = Caesar.Encrypt(plaintext, options.Key);
         Console.Write(ciphertext);
     }
 
     private static void CaesarDecrypt(CaesarDecryptOptions options)
     {
-        var ciphertext = Console.In.ReadToEnd();
+        var ciphertext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var plaintext = Caesar.Decrypt(ciphertext, options.Key);
         Console.Write(plaintext);
     }
 
-    private static void CaesarBruteForce()
+    private static void CaesarBruteForce(CaesarBruteForceOptions options)
     {
-        var ciphertext = Console.In.ReadToEnd();
+        var ciphertext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var candidates = Classic.CaesarBruteForce.bruteForce(ciphertext);
         for (var i = 0; i < candidates.Length; i++)
         {
@@ -175,9 +179,9 @@ public static class Program
         }
     }
 
-    private static void CaesarAuto()
+    private static void CaesarAuto(CaesarAutoOptions options)
     {
-        var ciphertext = Console.In.ReadToEnd();
+        var ciphertext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var languageIdentifier = new LanguageIdentifier(TrigramList.ENUS, TrigramList.PTBR);
         var candidates = Classic.CaesarBruteForce.bruteForce(ciphertext);
         var (result, key) = candidates
@@ -189,42 +193,42 @@ public static class Program
 
     private static void SubstitutionEncrypt(SubstitutionEncryptOptions options)
     {
-        var plaintext = Console.In.ReadToEnd();
+        var plaintext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var ciphertext = Substitution.Encrypt(plaintext, Substitution.ParseKey(options.Key!));
         Console.Write(ciphertext);
     }
 
     private static void SubstitutionDecrypt(SubstitutionDecryptOptions options)
     {
-        var ciphertext = Console.In.ReadToEnd();
+        var ciphertext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var plaintext = Substitution.Decrypt(ciphertext, Substitution.ParseKey(options.Key!));
         Console.Write(plaintext);
     }
 
     private static void VigenereEncrypt(VigenereEncryptOptions options)
     {
-        var plaintext = Console.In.ReadToEnd();
+        var plaintext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var ciphertext = Vigenere.Encrypt(plaintext, options.Key!);
         Console.Write(ciphertext);
     }
 
     private static void VigenereDecrypt(VigenereDecryptOptions options)
     {
-        var ciphertext = Console.In.ReadToEnd();
+        var ciphertext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var plaintext = Vigenere.Decrypt(ciphertext, options.Key!);
         Console.Write(plaintext);
     }
 
     private static void AutoKeyEncrypt(AutoKeyEncryptOptions options)
     {
-        var plaintext = Console.In.ReadToEnd();
+        var plaintext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var ciphertext = AutoKey.Encrypt(plaintext, options.Key!);
         Console.Write(ciphertext);
     }
 
     private static void AutoKeyDecrypt(AutoKeyDecryptOptions options)
     {
-        var ciphertext = Console.In.ReadToEnd();
+        var ciphertext = CliConventions.GetStreamReader(options.input).ReadToEnd();
         var plaintext = AutoKey.Decrypt(ciphertext, options.Key!);
         Console.Write(plaintext);
     }
