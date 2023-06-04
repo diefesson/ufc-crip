@@ -1,9 +1,11 @@
 from typing import Tuple
-from math import gcd
+from math import ceil, gcd
 from random import randrange
 
 from simplersa.eea import eea
 from simplersa.primes.prime_generation import high_level_candidate
+
+Key = Tuple[int, int]
 
 
 def _find_e(np: int):
@@ -17,14 +19,14 @@ def _euler_phi(p: int, q: int) -> int:
     return (p - 1) * (q - 1)
 
 
-def key_gen(nbits: int) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+def keygen(nbits: int) -> Tuple[Key, Key]:
     """Generates a RSA key pair
 
     Args:
         nbits (int): Number of bits
 
     Returns:
-        Tuple[Tuple[int, int], Tuple[int, int]]: Tuple containing the public and private
+        Tuple[Key, Key]: Tuple containing the public and private
         key, respectively
     """
     p = high_level_candidate(nbits)
@@ -36,11 +38,11 @@ def key_gen(nbits: int) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     return (e, n), (d, n)
 
 
-def encrypt(key: Tuple[int, int], data: int) -> int:
+def encrypt(key: Key, data: int) -> int:
     """RSA encryption
 
     Args:
-        key (Tuple[int, int]): The key
+        key (Key): The key
         data (int): The data to be encrypted
 
     Returns:
@@ -49,14 +51,44 @@ def encrypt(key: Tuple[int, int], data: int) -> int:
     return pow(data, key[0], key[1])
 
 
-def decrypt(key: Tuple[int, int], data: int) -> int:
+def decrypt(key: Key, data: int) -> int:
     """RSA decryption
 
     Args:
-        key (Tuple[int, int]): The key
+        key (Key): The key
         data (int): The data to be decrypted
 
     Returns:
         int: The decrypted data
     """
     return pow(data, key[0], key[1])
+
+
+def _int2hex(value: int) -> str:
+    byte_len = ceil(value.bit_length() / 8)
+    return value.to_bytes(byte_len).hex().upper()
+
+
+def encode_key(key: Key) -> str:
+    """Encodes a RSA key to a hexadecimal string
+
+    Args:
+        key (Key): The key to be encoded
+
+    Returns:
+        str: The encoded key
+    """
+    return f"{_int2hex(key[0])}:{_int2hex(key[1])}"
+
+
+def decode_key(key: str) -> Key:
+    """Decodes a RSA key from a hexadecimal string
+
+    Args:
+        key (str): The key to be decoded
+
+    Returns:
+        Key: The decoded key
+    """
+    splits = key.split(":")
+    return int(splits[0], 16), int(splits[1], 16)

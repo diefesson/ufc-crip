@@ -1,11 +1,35 @@
-from simplersa.rsa import decrypt, encrypt, key_gen
+from ast import arg
+import sys
+from typing import List
+
+from argparse import Namespace
+
+from simplersa.cli import parse_args
+from simplersa.rsa import encode_key, keygen
+
+
+def main(args: List[str]):
+    options = parse_args(args[1:])
+    if options.verbose:
+        print(f"options = {options}")
+    match options.verb:
+        case "keygen":
+            _execute_keygen(options)
+        case _:
+            print("unknow verb")
+
+
+def _execute_keygen(options: Namespace):
+    keysize: int = options.size
+    pub_key, priv_key = keygen(keysize)
+    if options.verbose:
+        print(f"raw pub key  = {pub_key}")
+        print(f"raw priv key = {priv_key}")
+    encoded_pub_key = encode_key(pub_key)
+    encoded_priv_key = encode_key(priv_key)
+    print(f"pub key  = {encoded_pub_key}")
+    print(f"priv key = {encoded_priv_key}")
+
 
 if __name__ == "__main__":
-    nbits = 16
-    pub_key, priv_key = key_gen(16)
-    plain = 11
-    encrypted = encrypt(pub_key, plain)
-    decrypted = decrypt(priv_key, encrypted)
-    print(f"pub key = {pub_key}")
-    print(f"priv key = {priv_key}")
-    print(f"plain = {plain}, encrypted = {encrypted}, decrypted = {decrypted}")
+    main(sys.argv)
