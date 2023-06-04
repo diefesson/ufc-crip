@@ -1,4 +1,4 @@
-from rsa import decrypt, encrypt, key_gen
+from simplersa.rsa import decrypt, encrypt, key_gen
 
 if __name__ == "__main__":
     nbits = 16

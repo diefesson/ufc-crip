@@ -1,6 +1,7 @@
 from random import randrange
 from typing import Tuple
-from primes.first_primes import first_primes
+
+from simplersa.primes.first_primes import first_primes
 
 
 def nbit_random(nbits: int) -> int:

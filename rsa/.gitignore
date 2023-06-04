@@ -1,1 +1,9 @@
+# VSCode configuration
+.vscode
+
+# Python compilation cache folders
 __pycache__
+
+# Install temp folders
+simplersa.egg-info
+build

@@ -2,8 +2,8 @@ from typing import Tuple
 from math import gcd
 from random import randrange
 
-from eea import eea
-from primes.prime_generation import high_level_candidate
+from simplersa.eea import eea
+from simplersa.primes.prime_generation import high_level_candidate
 
 
 def _find_e(np: int):
