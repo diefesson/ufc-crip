@@ -7,3 +7,6 @@ __pycache__
 # Install temp folders
 simplersa.egg-info
 build
+
+# Python virtual enviroment folder
+venv
