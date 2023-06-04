@@ -1,4 +1,3 @@
-from ast import arg
 import sys
 from typing import List
 
@@ -10,8 +9,6 @@ from simplersa.rsa import encode_key, keygen
 
 def main(args: List[str]):
     options = parse_args(args[1:])
-    if options.verbose:
-        print(f"options = {options}")
     match options.verb:
         case "keygen":
             _execute_keygen(options)
