@@ -4,9 +4,8 @@
 # Python compilation cache folders
 __pycache__
 
-# Install temp folders
-simplersa.egg-info
-build
+# Hatchling dist folder folder
+dist
 
 # Python virtual enviroment folder
 venv

@@ -1,9 +1,12 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = ["setuptools"]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
 
 [project]
-name = "simplersa"
+name = "drsa"
 version = "0.1"
 authors = [{ name = "Diefesson" }]
 dependencies = ["argparse ~= 1.4.0"]
+
+[project.optional-dependencies]
+dev = ["build", "pip-tools", "pytest"]

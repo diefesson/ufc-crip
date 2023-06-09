@@ -2,7 +2,7 @@ from typing import Tuple
 from math import gcd
 from random import randrange
 
-from simplersa.math import eea, high_level_candidate
+from drsa.math import eea, high_level_candidate
 
 from .key import Key
 

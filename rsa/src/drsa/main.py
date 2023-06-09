@@ -1,7 +1,7 @@
 from argparse import Namespace
 from typing import List
 
-from simplersa.cli import (
+from drsa.cli import (
     Verb,
     create_parser,
     get_input,
@@ -9,7 +9,7 @@ from simplersa.cli import (
     get_text_input,
     get_text_output,
 )
-from simplersa.rsa import keygen, encode_key, decode_key, encrypt, decrypt
+from drsa.rsa import keygen, encode_key, decode_key, encrypt, decrypt
 
 
 def _execute_keygen(options: Namespace):

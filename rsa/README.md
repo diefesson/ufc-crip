@@ -18,7 +18,7 @@ Install pip-tools
 python -m pip install pip-tools
 ~~~~
 
-Install denpencies
+Install dependencies
 
 ~~~~ bash
 pip-sync
@@ -29,5 +29,5 @@ pip-sync
 For usage help run
 
 ~~~~ bash
-python -m simplersa --help
+python -m drsa --help
 ~~~~
