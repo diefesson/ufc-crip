@@ -2,7 +2,6 @@ from argparse import Namespace
 from typing import List
 
 from drsa.cli import (
-    Verb,
     create_parser,
     get_input,
     get_output,
@@ -13,15 +12,20 @@ from drsa.rsa import keygen, encode_key, decode_key, encrypt, decrypt
 
 
 def _execute_keygen(options: Namespace):
-    keysize: int = options.size
-    pub_key, priv_key = keygen(keysize)
-    if options.verbose:
-        print(f"raw pub key  = {pub_key}")
-        print(f"raw priv key = {priv_key}")
+    key_size: int = options.size
+    pub_key, pri_key = keygen(key_size)
+    pub_out = get_text_output(options.pub)
+    pri_out = get_text_output(options.pri)
     encoded_pub_key = encode_key(pub_key)
-    encoded_priv_key = encode_key(priv_key)
-    print(f"pub key  = {encoded_pub_key}")
-    print(f"priv key = {encoded_priv_key}")
+    encoded_pri_key = encode_key(pri_key)
+    if options.pub == "-":
+        print("pub key:", encoded_pub_key, file=pub_out)
+    else:
+        print(encoded_pub_key, file=pub_out)
+    if options.pri == "-":
+        print("pri key:", encoded_pri_key, file=pri_out)
+    else:
+        print(encoded_pri_key, file=pri_out)
 
 
 def _execute_encrypt(options: Namespace):
@@ -46,11 +50,11 @@ def main(args: List[str]):
     parser = create_parser()
     options = parser.parse_args(args)
     match options.verb:
-        case Verb.Keygen:
+        case "keygen":
             _execute_keygen(options)
-        case Verb.Encrypt:
+        case "encrypt":
             _execute_encrypt(options)
-        case Verb.Decrypt:
+        case "decrypt":
             _execute_decrypt(options)
         case _:
             print("unknow verb")

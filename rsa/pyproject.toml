@@ -9,4 +9,4 @@ authors = [{ name = "Diefesson" }]
 dependencies = ["argparse ~= 1.4.0"]
 
 [project.optional-dependencies]
-dev = ["build", "pip-tools", "pytest"]
+dev = ["build", "pip-tools"]
