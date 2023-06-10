@@ -1,5 +1,5 @@
 from argparse import Namespace
-from typing import List
+from sys import argv
 
 from drsa.cli import (
     create_parser,
@@ -46,9 +46,9 @@ def _execute_decrypt(options: Namespace):
     output.write(plaintext)
 
 
-def main(args: List[str]):
+def main():
     parser = create_parser()
-    options = parser.parse_args(args)
+    options = parser.parse_args(argv[1:])
     match options.verb:
         case "keygen":
             _execute_keygen(options)

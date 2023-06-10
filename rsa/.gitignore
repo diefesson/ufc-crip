@@ -4,7 +4,10 @@
 # Python compilation cache folders
 __pycache__
 
-# Hatchling dist folder folder
+# Temp build folders
+*.egg-info
+
+# Dist folder
 dist
 
 # Python virtual enviroment folder

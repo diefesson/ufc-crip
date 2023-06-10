@@ -1,6 +1,6 @@
 [build-system]
-build-backend = "hatchling.build"
-requires = ["hatchling"]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "drsa"
@@ -9,4 +9,10 @@ authors = [{ name = "Diefesson" }]
 dependencies = ["argparse ~= 1.4.0"]
 
 [project.optional-dependencies]
-dev = ["build", "pip-tools"]
+dev = ["build"]
+
+[project.scripts]
+drsa = "drsa.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

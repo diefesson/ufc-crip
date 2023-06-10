@@ -1,27 +1,27 @@
 # Setup
 
-Create virtual enviroment
+Create virtual environment
 
 ~~~~ bash
 python -m venv venv
 ~~~~
 
-Activate virtual enviroment
+Activate virtual environment
 
 ~~~~ bash
 ./venv/Scripts/activate
 ~~~~
 
-Install pip-tools
+Install package in editable mode with dev dependencies
 
 ~~~~ bash
-python -m pip install pip-tools
+python -m pip install -e .[dev]
 ~~~~
 
-Install dependencies
+# Build
 
 ~~~~ bash
-pip-sync
+python -m build
 ~~~~
 
 # Usage
