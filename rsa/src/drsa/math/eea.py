@@ -16,7 +16,7 @@ def eea(a: int, b: int) -> Tuple[int, int, int]:
     px, x = (1, 0) if a >= b else (0, 1)
     py, y = (0, 1) if a >= b else (1, 0)
     while r != 0:
-        q = int(pr / r)
+        q = pr // r
         pr, r = r, pr - q * r
         px, x = x, px - q * x
         py, y = y, py - q * y
