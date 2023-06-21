@@ -1,7 +1,13 @@
+from itertools import takewhile
 from random import randrange
 from typing import Tuple
 
-from .first_primes import first_primes
+from .prime_sieve import prime_sieve
+
+
+"""Small primes, less than 350
+"""
+_small_primes = prime_sieve(350)
 
 
 def nbit_random(nbits: int) -> int:
@@ -19,7 +25,7 @@ def nbit_random(nbits: int) -> int:
 
 
 def low_level_test(candidate: int) -> bool:
-    """Tests if a candidate is coprime for some of first know primes
+    """Tests if a candidate is coprime for some of small know primes
 
     Args:
         candidate (int):the number to be tested
@@ -27,11 +33,12 @@ def low_level_test(candidate: int) -> bool:
     Returns:
         bool: True if its coprime for some of the firs know primes
     """
-    return not any(map(lambda n: candidate % n == 0, first_primes))
+    divisors = takewhile(lambda p: p**2 < candidate, _small_primes)
+    return not any(map(lambda n: candidate % n == 0, divisors))
 
 
 def low_level_candidate(nbits: int) -> int:
-    """Generates a coprime to the some of the first know primes
+    """Generates a coprime to the some of the small know primes
 
     Args:
         nbits (int): number of bits of the candidate
@@ -86,7 +93,7 @@ def high_level_test(candidate: int, try_count: int) -> bool:
 
 
 def high_level_candidate(nbits: int, try_count: int = 20) -> int:
-    """Generates a arbitrarly large prime number using Miller-Rabin primality test
+    """Generates a arbitrarily large prime number using Miller-Rabin primality test
 
     Args:
         nbits (int): Number of bits of the generated candidate

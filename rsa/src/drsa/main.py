@@ -8,25 +8,32 @@ from drsa.cli import (
     get_text_input,
     get_text_output,
 )
-from drsa.rsa import keygen, encode_key, decode_key, encrypt, decrypt
-from drsa.rsa.recovering import recover
+from drsa.math import high_level_candidate
+from drsa.rsa import keygen, encode_key, decode_key, encrypt, decrypt, recover
+
+
+def _execute_primegen(options: Namespace):
+    prime_size = options.size
+    output = get_text_output(options.output)
+    prime = high_level_candidate(prime_size)
+    print(prime, file=output)
 
 
 def _execute_keygen(options: Namespace):
-    key_size: int = options.size
-    pub_key, pri_key = keygen(key_size)
-    pub_out = get_text_output(options.pub)
-    pri_out = get_text_output(options.pri)
+    prime_size: int = options.size
+    pub_key, pri_key = keygen(prime_size)
+    pub_output = get_text_output(options.pub)
+    pri_output = get_text_output(options.pri)
     encoded_pub_key = encode_key(pub_key)
     encoded_pri_key = encode_key(pri_key)
     if options.pub == "-":
-        print("pub key:", encoded_pub_key, file=pub_out)
+        print("pub key:", encoded_pub_key, file=pub_output)
     else:
-        print(encoded_pub_key, file=pub_out)
+        print(encoded_pub_key, file=pub_output)
     if options.pri == "-":
-        print("pri key:", encoded_pri_key, file=pri_out)
+        print("pri key:", encoded_pri_key, file=pri_output)
     else:
-        print(encoded_pri_key, file=pri_out)
+        print(encoded_pri_key, file=pri_output)
 
 
 def _execute_encrypt(options: Namespace):
@@ -59,6 +66,8 @@ def main():
     parser = create_parser()
     options = parser.parse_args(argv[1:])
     match options.verb:
+        case "primegen":
+            _execute_primegen(options)
         case "keygen":
             _execute_keygen(options)
         case "encrypt":
@@ -68,4 +77,4 @@ def main():
         case "recover":
             _execute_recover(options)
         case _:
-            print("unknown verb")
+            parser.print_help()

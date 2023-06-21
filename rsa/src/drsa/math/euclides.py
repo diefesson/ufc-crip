@@ -2,7 +2,7 @@ from typing import Tuple
 
 
 def eea(a: int, b: int) -> Tuple[int, int, int]:
-    """extended euclidean algorithm
+    """Extended euclidean algorithm
 
     Args:
         a (int): first number
@@ -21,3 +21,16 @@ def eea(a: int, b: int) -> Tuple[int, int, int]:
         px, x = x, px - q * x
         py, y = y, py - q * y
     return pr, px, py
+
+
+def modular_inverse(n: int, m: int) -> int:
+    """Calculate modular inverse
+
+    Args:
+        n (int): number to be inverted
+        mod (int): modulus
+
+    Returns:
+        int: the inverted number
+    """
+    return eea(m, n)[2] % m

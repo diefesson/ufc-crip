@@ -2,7 +2,7 @@ from math import gcd
 from random import randrange
 from typing import Tuple
 
-from drsa.math import eea, euler_phi, high_level_candidate
+from drsa.math import euler_phi, high_level_candidate, modular_inverse
 
 from .key import Key
 
@@ -29,5 +29,5 @@ def keygen(nbits: int) -> Tuple[Key, Key]:
     n = p * q
     np = euler_phi(p, q)
     e = _find_e(np)
-    d = eea(e, np)[1] % np
+    d = modular_inverse(e, np)
     return (e, n), (d, n)
