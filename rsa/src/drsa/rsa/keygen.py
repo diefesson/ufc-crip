@@ -2,9 +2,10 @@ from math import gcd
 from random import randrange
 from typing import Tuple
 
-from drsa.math import euler_phi, high_level_candidate, modular_inverse
-
-from .key import Key
+from drsa.math.euclides import modular_inverse
+from drsa.math.eulerphi import euler_phi
+from drsa.math.primegen import high_level_candidate
+from drsa.rsa.key import Key
 
 
 def _find_e(np: int):

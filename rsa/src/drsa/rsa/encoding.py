@@ -1,6 +1,6 @@
 from math import ceil
 
-from .key import Key
+from drsa.rsa.key import Key
 
 
 def _int2hex(value: int) -> str:

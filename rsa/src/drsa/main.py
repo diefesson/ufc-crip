@@ -1,15 +1,13 @@
 from argparse import Namespace
 from sys import argv
 
-from drsa.cli import (
-    create_parser,
-    get_input,
-    get_output,
-    get_text_input,
-    get_text_output,
-)
-from drsa.math import high_level_candidate
-from drsa.rsa import keygen, encode_key, decode_key, encrypt, decrypt, recover
+from drsa.cli.io import get_input, get_output, get_text_input, get_text_output
+from drsa.cli.parsing import create_parser
+from drsa.math.primegen import high_level_candidate
+from drsa.rsa.encoding import decode_key, encode_key
+from drsa.rsa.encryption import decrypt, encrypt
+from drsa.rsa.keygen import keygen
+from drsa.rsa.recovering import recover
 
 
 def _execute_primegen(options: Namespace):

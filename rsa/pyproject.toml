@@ -9,7 +9,7 @@ authors = [{ name = "Diefesson" }]
 dependencies = ["argparse ~= 1.4.0"]
 
 [project.optional-dependencies]
-dev = ["build"]
+dev = ["pytest"]
 
 [project.scripts]
 drsa = "drsa.main:main"

@@ -2,12 +2,11 @@ from itertools import takewhile
 from random import randrange
 from typing import Tuple
 
-from .prime_sieve import prime_sieve
-
+from drsa.math.sieving import sieve
 
 """Small primes, less than 350
 """
-_small_primes = prime_sieve(350)
+_small_primes = sieve(350)
 
 
 def nbit_random(nbits: int) -> int:

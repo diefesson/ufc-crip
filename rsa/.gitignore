@@ -9,6 +9,7 @@ __pycache__
 
 # Dist folder
 dist
+build
 
 # Python virtual enviroment folder
-venv
+env

@@ -1,4 +1,4 @@
-from .key import Key
+from drsa.rsa.key import Key
 
 
 def encrypt(key: Key, data: int) -> int:

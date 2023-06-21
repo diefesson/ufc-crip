@@ -1,6 +1,7 @@
-from drsa.math import euler_phi, factor, modular_inverse
-
-from .key import Key
+from drsa.math.euclides import modular_inverse
+from drsa.math.eulerphi import euler_phi
+from drsa.math.factoring import factor
+from drsa.rsa.key import Key
 
 
 def recover(key: Key) -> Key:

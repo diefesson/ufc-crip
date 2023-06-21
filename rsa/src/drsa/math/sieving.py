@@ -2,7 +2,7 @@ from itertools import takewhile
 from typing import List
 
 
-def prime_sieve(limit: int) -> List[int]:
+def sieve(limit: int) -> List[int]:
     """Implementation of Eratosthenes sieve
 
     Args:
