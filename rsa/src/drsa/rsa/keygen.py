@@ -1,8 +1,8 @@
-from typing import Tuple
 from math import gcd
 from random import randrange
+from typing import Tuple
 
-from drsa.math import eea, high_level_candidate
+from drsa.math import eea, euler_phi, high_level_candidate
 
 from .key import Key
 
@@ -12,10 +12,6 @@ def _find_e(np: int):
         e = randrange(2, np)
         if gcd(np, e) == 1:
             return e
-
-
-def _euler_phi(p: int, q: int) -> int:
-    return (p - 1) * (q - 1)
 
 
 def keygen(nbits: int) -> Tuple[Key, Key]:
@@ -31,7 +27,7 @@ def keygen(nbits: int) -> Tuple[Key, Key]:
     p = high_level_candidate(nbits)
     q = high_level_candidate(nbits)
     n = p * q
-    np = _euler_phi(p, q)
+    np = euler_phi(p, q)
     e = _find_e(np)
     d = eea(e, np)[1] % np
     return (e, n), (d, n)

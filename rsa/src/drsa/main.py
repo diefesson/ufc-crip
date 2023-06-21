@@ -9,6 +9,7 @@ from drsa.cli import (
     get_text_output,
 )
 from drsa.rsa import keygen, encode_key, decode_key, encrypt, decrypt
+from drsa.rsa.recovering import recover
 
 
 def _execute_keygen(options: Namespace):
@@ -46,6 +47,14 @@ def _execute_decrypt(options: Namespace):
     output.write(plaintext)
 
 
+def _execute_recover(options: Namespace):
+    key = decode_key(options.key)
+    output = get_text_output(options.output)
+    recovered_key = recover(key)
+    encoded_key = encode_key(recovered_key)
+    print(encoded_key, file=output)
+
+
 def main():
     parser = create_parser()
     options = parser.parse_args(argv[1:])
@@ -56,5 +65,7 @@ def main():
             _execute_encrypt(options)
         case "decrypt":
             _execute_decrypt(options)
+        case "recover":
+            _execute_recover(options)
         case _:
-            print("unknow verb")
+            print("unknown verb")

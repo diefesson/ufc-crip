@@ -34,4 +34,12 @@ def create_parser() -> ArgumentParser:
         "-o", "--output", type=str, default="-", help="Plaintext output file"
     )
 
+    recover_parser = subparsers.add_parser("recover", help="Recovers a RSA key")
+    recover_parser.add_argument(
+        "-k", "--key", type=str, help="Key which pair should be recovered"
+    )
+    recover_parser.add_argument(
+        "-o", "--output", type=str, default="-", help="Output file"
+    )
+
     return parser
